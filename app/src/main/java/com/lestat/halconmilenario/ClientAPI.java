@@ -16,7 +16,6 @@ public class ClientAPI   {
 
     private retrofit.RestAdapter restAdapter;
     private RestInterface apiService;
-    Context context;
 
     public ClientAPI()
     {

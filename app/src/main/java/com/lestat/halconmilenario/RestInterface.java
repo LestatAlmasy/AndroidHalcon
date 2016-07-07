@@ -12,7 +12,7 @@ import retrofit.http.POST;
  */
 public interface RestInterface {
 
-    @Headers("Content-Type: x-www-form-urlencoded")
+    @Headers("Content-Type: application/json")
     @POST("/events")
     public void NuevoEvento(@Body events cApp, Callback<events> callback);
 
