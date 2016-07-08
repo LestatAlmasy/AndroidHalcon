@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lestat.halconmilenario.serviceClass.events;
+import com.lestat.halconmilenario.serviceClass.users;
 import com.lestat.halconmilenario.utilidades.util;
 
 import org.json.JSONObject;
@@ -25,8 +26,10 @@ public class login extends AppCompatActivity {
 
     ClientAPI restService;
     Button customInicio;
-    String correo,pass, result;
-    events in = new events();
+    JSONObject resultJson;
+    String correo,pass, result, user2;
+    //events in = new events();
+    users in = new users();
     util utilfun;
     EditText customUsuario, customPass;
     @Override
@@ -36,7 +39,7 @@ public class login extends AppCompatActivity {
         getSupportActionBar().hide();
 
         restService = new ClientAPI();
-
+        utilfun = new util();
         customUsuario = (EditText) findViewById(R.id.input_usuario);
         customPass = (EditText)findViewById(R.id.input_pass);
 
@@ -61,19 +64,41 @@ public class login extends AppCompatActivity {
                         customInicio.setText("Cargando. . . ");
                         correo = customUsuario.getText().toString();
                         pass = customPass.getText().toString();
-                        in.setCategoria(correo);
-                        in.setDescripcion(pass);
+                        in.setUser(correo);
+                        in.setPass(pass);
 
-                        restService.getService().NuevoEvento(in, new retrofit.Callback<events>() {
+                        restService.getService().Login(in, new retrofit.Callback<users>() {
                             @Override
-                            public void success(events events, Response response) {
-                                Log.d("Error","No se que pasa");
-                                //result = utilfun.responseService(response);
+                            public void success(users users, Response response) {
+                                result = utilfun.responseService(response);
 
+                                try{
+                                    resultJson = new JSONObject(result);
+                                    user2 = resultJson.getString("user");
+
+                                    if(user2.equals(in.getUser())){
+                                        Toast errorCon = new Toast(getApplicationContext());
+                                        errorCon.makeText(getApplicationContext(), "¡Exito! Ingresando...", Toast.LENGTH_SHORT).show();
+                                        errorCon.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 0);
+                                        //result = utilfun.responseService(response);
+                                        Intent disparo = new Intent(login.this, MenuDisparo.class);
+                                        startActivity(disparo);
+                                        finish();
+
+                                    }else{
+                                        Toast errorCon = new Toast(getApplicationContext());
+                                        errorCon.makeText(getApplicationContext(), "¡ERROR! Usuario no existe", Toast.LENGTH_SHORT).show();
+                                        errorCon.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 0);
+
+                                    }
+                                }catch (Exception e) {
+                                    customInicio.setText(R.string.inicio);
+                                    Log.d("Excepcion", e.toString());
+                                }
                             }
-
                             @Override
                             public void failure(RetrofitError error) {
+                                Log.d("error:",error.getMessage());
                                 customInicio.setText(R.string.inicio);
                                 Toast errorCon = new Toast(getApplicationContext());
                                 errorCon.makeText(getApplicationContext(), "Error de conexión", Toast.LENGTH_SHORT).show();

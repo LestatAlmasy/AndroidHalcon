@@ -1,7 +1,6 @@
 package com.lestat.halconmilenario;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,5 +29,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         cuenta();
+    }
+
+    /**
+     * Created by Lestat on 08-07-2016.
+     */
+    public static class ArmaAdapter {
     }
 }

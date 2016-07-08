@@ -3,4 +3,6 @@
     <string name="Mail">Correo</string>
     <string name="Pass">Contraseña</string>
     <string name="inicio">INICIAR SESIÓN</string>
+    <string name="buscar">Buscar armamento y disparar</string>
+    <string name="codigo">INGRESE CODIGO ARMA</string>
 </resources>
